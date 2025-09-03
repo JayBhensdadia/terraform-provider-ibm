@@ -178,6 +178,17 @@ var CISRulesetsRulesObject = &schema.Resource{
 							},
 						},
 					},
+					CISRules: {
+						Type:        schema.TypeMap,
+						Optional:    true,
+						Description: "Map of rulesetId and array of rules",
+						Elem: &schema.Schema{
+							Type: schema.TypeList,
+							Elem: &schema.Schema{
+								Type: schema.TypeString,
+							},
+						},
+					},
 				},
 			},
 		},

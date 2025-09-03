@@ -65,6 +65,7 @@ const (
 	CISRulesetOverridesScoreThreshold                  = "score_threshold"
 	CISRulesetsRulePhases                              = "phases"
 	CISRulesetsRuleProducts                            = "products"
+	CISRules                                           = "rules"
 )
 
 var CISResponseObject = &schema.Resource{
