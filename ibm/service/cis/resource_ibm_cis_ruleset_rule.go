@@ -179,13 +179,24 @@ var CISRulesetsRulesObject = &schema.Resource{
 						},
 					},
 					CISRules: {
-						Type:        schema.TypeMap,
+						Type:        schema.TypeSet,
 						Optional:    true,
-						Description: "Map of rulesetId and array of rules",
-						Elem: &schema.Schema{
-							Type: schema.TypeList,
-							Elem: &schema.Schema{
-								Type: schema.TypeString,
+						Description: "rules to skip",
+						Elem: &schema.Resource{
+							Schema: map[string]*schema.Schema{
+								"ruleset_id": {
+									Type:        schema.TypeString,
+									Required:    true,
+									Description: "The ruleset ID",
+								},
+								"rule_ids": {
+									Type:        schema.TypeList,
+									Required:    true,
+									Description: "List of rule IDs",
+									Elem: &schema.Schema{
+										Type: schema.TypeString,
+									},
+								},
 							},
 						},
 					},
