@@ -597,6 +597,32 @@ func expandCISRulesetsRulesActionParameters(obj interface{}) rulesetsv1.ActionPa
 	productsList := flex.ExpandStringList(products)
 	actionParameterRespObj.Products = productsList
 
+	// Extract CISRules (rules to skip) and map them as a map[string][]string
+	if cisRules, ok := actionParameterObj[CISRules].(map[string]interface{}); ok {
+		rulesToSkip := make(map[string][]string) // Create map to store ruleset_id -> list of rule_ids
+
+		for rulesetID, ruleIDsInterface := range cisRules {
+			ruleIDs, ok := ruleIDsInterface.([]interface{})
+			if !ok {
+				// Handle the case where ruleIDs is not of expected type
+				continue
+			}
+
+			// Convert rule_ids to a string slice
+			ruleIDList := make([]string, len(ruleIDs))
+			for i, ruleID := range ruleIDs {
+				ruleIDList[i] = fmt.Sprint(ruleID)
+			}
+
+			// Add the rule to the map (ruleset_id -> rule_ids)
+			rulesToSkip[rulesetID] = ruleIDList
+			fmt.Println(rulesetID, " -> ", ruleIDList)
+		}
+
+		// Add the rules to the action parameters object
+		actionParameterRespObj.Rules = rulesToSkip
+	}
+
 	finalResponse := make([]rulesetsv1.ActionParameters, 0)
 
 	overrideObj := rulesetsv1.Overrides{}
